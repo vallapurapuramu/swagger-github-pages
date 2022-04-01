@@ -9,34 +9,150 @@ info:
   license:
     name: "Apache 2.0"
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
-host: "https://intermanager-ui.herokuapp.com/#/register"
-basePath: "/im/api"
+host: "intermanager-ui.herokuapp.com"
+basePath: "/"
 tags:
-- name: "user"
-  description: "User Login Credentials"
+- name: "Register/Login"
+  description: "Everything about your Register"
+  externalDocs:
+    description: "Find out more"
+    url: "http://swagger.io"
+- name: "Student"
+  description: "Everything about your Student and Internship application"
+  externalDocs:
+    description: "Find out more"
+    url: "http://swagger.io"
+    
+- name: "Application"
+  description: "Everything about your Student and Internship application"
+  externalDocs:
+    description: "Find out more"
+    url: "http://swagger.io"    
+    
+    
 - name: "Faculty"
-  description: ""
-
+  description: "Everything about your Faculty"
+  externalDocs:
+    description: "Find out more"
+    url: "http://swagger.io"
+    
+    
+    
+- name: "store"
+  description: "Access to Petstore orders"
+- name: "User"
+  description: "Operations about user"
+  externalDocs:
+    description: "Find out more about our store"
+    url: "http://swagger.io"
 schemes:
 - "https"
-
+- "http"
 paths:
-  /majors:
-    get:
+  /register:
+    post:
       tags:
-      - "major"
-      summary: "Get a list of all the majors"
+      - "Register/Login"
+      summary: "Add a new Student to the DB"
       description: ""
-      operationId: "getMajors"
+      operationId: "addUser"
       consumes:
       - "application/json"
+      - "application/xml"
       produces:
+      - "application/xml"
       - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Student object that needs to be added to the DB"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
       responses:
-        "404":
-          description: "Not found"
-		  
-	/applications:
+        "405":
+          description: "Invalid input"
+          
+  /addInternshipApplication:
+    post:
+      tags:
+      - "Application"
+      summary: "Add a new Internship Application"
+      description: ""
+      operationId: "addInternshipApplication"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Internship Application object that needs to be added to the DB"
+        required: true
+        schema:
+          $ref: "#/definitions/internships"
+      responses:
+        "405":
+          description: "Invalid input"   
+          
+  /updateInternshipApplication:
+    post:
+      tags:
+      - "Application"
+      summary: "Add a new Internship Application"
+      description: ""
+      operationId: "updateInternshipApplication"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Internship Application object that needs to be added to the DB"
+        required: true
+        schema:
+          $ref: "#/definitions/internships"
+      responses:
+        "405":
+          description: "Invalid input"         
+          
+          
+      
+  
+  /login:
+    post:
+      tags:
+      - "Register/Login"
+      summary: "Login with Valid Credenatils"
+      description: ""
+      operationId: "login"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "email"
+        in: "query"
+        description: "Email values that need to be considered for login"
+        required: true
+        type: "string"
+      - name: "password"
+        in: "query"
+        description: "password values that need to be considered for login"
+        required: true
+        type: "string" 
+        
+      responses:
+        "200":
+          description: "successful Login"
+        "400":
+          description: "Invalid status value"
+          
+  /applications:
     get:
       tags:
       - "Application"
@@ -49,12 +165,12 @@ paths:
       - "application/json"
       responses:
         "404":
-          description: "Not found"	  
-		  
-	/application/id:
+          description: "Not found" 
+          
+  /application/id:
     get:
       tags:
-      - "Application Based On Id"
+      - "Application"
       summary: "Get the application based on Id"
       description: ""
       operationId: "getInternshipData"
@@ -64,12 +180,28 @@ paths:
       - "application/json"
       responses:
         "404":
-          description: "Not found"	
-
-	/student/personalDetails/:studentId:
+          description: "Not found"
+          
+  
+  /majors:
     get:
       tags:
-      - "Student personla Based On Id"
+      - "Application"
+      summary: "Get a list of all the majors"
+      description: ""
+      operationId: "getMajors"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        "404":
+          description: "Not found" 
+          
+  /student/personalDetails/:studentId:
+    get:
+      tags:
+      - "Student"
       summary: "Get the Student details based on Id"
       description: ""
       operationId: "getPersonalDetails"
@@ -79,12 +211,12 @@ paths:
       - "application/json"
       responses:
         "404":
-          description: "Not found"
-
-	/student/comments/:applicationId:
+          description: "Not found" 
+          
+  /student/comments/:applicationId:
     get:
       tags:
-      - "Comments Based On StudentId"
+      - "Student"
       summary: "Get the Comments Based On StudentId"
       description: ""
       operationId: "getComments"
@@ -94,12 +226,12 @@ paths:
       - "application/json"
       responses:
         "404":
-          description: "Not found"	
-
-	/verifyfaculty/:id:
+          description: "Not found"
+          
+  /verifyfaculty/:id:
     get:
       tags:
-      - "Verify Faulty Based On Id"
+      - "Faculty"
       summary: "Get the Faulty Based On Id"
       description: ""
       operationId: "getFaculty"
@@ -109,449 +241,90 @@ paths:
       - "application/json"
       responses:
         "404":
-          description: "Not found"		
-		  
-		  
+          description: "Not found" 
+          
 
+  /studentdata:
     post:
       tags:
-      - "user"
-      summary: "Add user login credentials"
+      - "Student"
+      summary: "Add a new Student to the DB"
       description: ""
-      operationId: "postUser"
+      operationId: "addStudentData"
       consumes:
       - "application/json"
+      - "application/xml"
       produces:
+      - "application/xml"
       - "application/json"
       parameters:
-      - name: "userName"
-        in: "query"
-        description: ""
+      - in: "body"
+        name: "body"
+        description: "Student object that needs to be added to the DB"
         required: true
-        type: "string"
-      - name: "email"
-        in: "query"
-        description: ""
-        required: true
-        type: "string"
-      - name: "password"
-        in: "query"
-        description: ""
-        required: true
-        type: "string"    
-      responses:
-        "200":
-          description: "successful operation"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/user"
-        "400":
-          description: "Invalid status value"
-
-
-  /locations:
-    get:
-      tags:
-      - "location"
-      summary: "Get a list of all the Locations"
-      description: ""
-      operationId: "getLocations"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
+        schema:
+          $ref: "#/definitions/student_details"
       responses:
         "405":
-          description: "Invalid input"
-
-    post:
+          description: "Invalid input"          
+  
+  
+          
+  
+  /logout:
+    get:
       tags:
-      - "login"
-      summary: "Login"
+      - "Register/Login"
+      summary: "Logs out current logged in user session"
       description: ""
-      operationId: "login"
-      consumes:
-      - "application/json"
+      operationId: "logoutUser"
       produces:
+      - "application/xml"
       - "application/json"
-      parameters:
-      - email: "email"
-        in: "query"
-        description: ""
-        required: true
-        type: "string"
-		
-	  - password: "password"
-	    in: "query"
-        description: ""
-        required: true
-        type: "string"
-	   
-	   responses:
-        "200":
-          description: "successful login"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/login"
-        "400":
-          description: "Invalid status value"
-		  
-	 post:
-      tags:
-      - "register"
-      summary: "Register"
-      description: ""
-      operationId: "register"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
-      - email: "email"
-        in: "query"
-        description: ""
-        required: true
-        type: "string"
-		
-	  - password: "password"
-	    in: "query"
-        description: ""
-        required: true
-        type: "string"
-		
-	  - firstname: "firstname"
-	    in: "query"
-        description: ""
-        required: true
-        type: "string"
-		
-	  - lastname: "lastname"
-	    in: "query"
-        description: ""
-        required: true
-        type: "string"
-		
-	   responses:
-        "200":
-          description: "successful Register"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/register"
-        "400":
-          description: "Invalid status value"	  
-
-
+      parameters: []
+      responses:
+        default:
+          description: "successful operation"
   
 
-
- post:
-      tags:
-      - "studentdata"
-      summary: "studentdata"
-      description: ""
-      operationId: "studentdata"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
-      - addressLine1: "addressLine1"
-        in: "query"
-        description: ""
-        required: true
-        type: "string"
-		
-	  - addressLine2: "addressLine2"
-	    in: "query"
-        description: ""
-        required: true
-        type: "string"
-		
-	  - city: "city"
-	    in: "query"
-        description: ""
-        required: true
-        type: "string"
-		
-	  - state: "state"
-	    in: "query"
-        description: ""
-        required: true
-        type: "string"
-		
-		- contact: "contact"
-	    in: "query"
-        description: ""
-        required: true
-        type: "string"
-		
-		- majorId: "majorId"
-	    in: "query"
-        description: ""
-        required: true
-        type: "string"
-		
-		- studentId: "studentId"
-	    in: "query"
-        description: ""
-        required: true
-        type: "string"
-		
-	   responses:
-        "200":
-          description: "successful Register"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/studentdata"
-        "400":
-          description: "Invalid status value"	
-
-
-post:
-      tags:
-      - "addInternshipApplication"
-      summary: "addInternshipApplication"
-      description: ""
-      operationId: "addInternshipApplication"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
-      - applicationStatus: "applicationStatus"
-        in: "query"
-        description: ""
-        required: true
-        type: "string"
-		
-	  - applicationDate: "applicationDate"
-	    in: "query"
-        description: ""
-        required: true
-        type: "string"
-		
-	  - approvedBy: "approvedBy"
-	    in: "query"
-        description: ""
-        required: true
-        type: "string"
-		
-	  - comments: "comments"
-	    in: "query"
-        description: ""
-        required: true
-        type: "string"
-		
-		- startDate: "startDate"
-	    in: "query"
-        description: ""
-        required: true
-        type: "string"
-		
-		- endDate: "endDate"
-	    in: "query"
-        description: ""
-        required: true
-        type: "string"
-		
-		- pushNotification: "pushNotification"
-	    in: "query"
-        description: ""
-        required: true
-        type: "string"
-		
-		- employerName: "employerName"
-	    in: "query"
-        description: ""
-        required: true
-        type: "string"
-		
-		
-		- primaryContactName: "primaryContactName"
-	    in: "query"
-        description: ""
-        required: true
-        type: "string"
-		
-		- email: "email"
-	    in: "query"
-        description: ""
-        required: true
-        type: "string"
-		
-	   responses:
-        "200":
-          description: "successful Register"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/addInternshipApplication"
-        "400":
-          description: "Invalid status value"
-
-
- post:
-      tags:
-      - "comments"
-      summary: "comments"
-      description: ""
-      operationId: "comments"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
-      - StudentId: "StudentId"
-        in: "query"
-        description: ""
-        required: true
-        type: "string"
-			
-	   responses:
-        "200":
-          description: "successful Register"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/register"
-        "400":
-          description: "Invalid status value"	
-patch:
-		tags:
-      - "update-applications-status/:id"
-      summary: "applications Status update"
-      description: ""
-      operationId: "applications Status update"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
-      - StudentId: "StudentId"
-        in: "query"
-        description: ""
-        required: true
-        type: "string"
-		
-		- applicationId: "applicationId"
-        in: "query"
-        description: ""
-        required: true
-        type: "string"
-	   responses:
-        "200":
-          description: "successful Saved"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/update-applications-status/:id"
-        "400":
-          description: "Invalid status value"	
-
-
-
-patch:
-      tags:
-      - "student/updateapplicationdata/:id"
-      summary: "update application based on id"
-      description: ""
-      operationId: "student/updateapplicationdata/:id"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
-      - applicationStatus: "applicationStatus"
-        in: "query"
-        description: ""
-        required: true
-        type: "string"
-		
-	  - applicationDate: "applicationDate"
-	    in: "query"
-        description: ""
-        required: true
-        type: "string"
-		
-	  - approvedBy: "approvedBy"
-	    in: "query"
-        description: ""
-        required: true
-        type: "string"
-		
-	  - comments: "comments"
-	    in: "query"
-        description: ""
-        required: true
-        type: "string"
-		
-		- startDate: "startDate"
-	    in: "query"
-        description: ""
-        required: true
-        type: "string"
-		
-		- endDate: "endDate"
-	    in: "query"
-        description: ""
-        required: true
-        type: "string"
-		
-		- pushNotification: "pushNotification"
-	    in: "query"
-        description: ""
-        required: true
-        type: "string"
-		
-		- employerName: "employerName"
-	    in: "query"
-        description: ""
-        required: true
-        type: "string"
-		
-		
-		- primaryContactName: "primaryContactName"
-	    in: "query"
-        description: ""
-        required: true
-        type: "string"
-		
-		- email: "email"
-	    in: "query"
-        description: ""
-        required: true
-        type: "string"
-		
-	   responses:
-        "200":
-          description: "successful Register"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/student/updateapplicationdata/:id"
-        "400":
-          description: "Invalid status value"
-
-
 definitions:
-  users:
+  student_details:
     type: "object"
     properties:
-      userName:
+      addressLine1:
         type: "string"
-      email:
+      addressLine2:
         type: "string"
-      password:
+      city:
+        type: "string"	
+      state:
         type: "string"
-	 firstname:
+      zipCode:
         type: "string"
-	 lastname:
+      contact:
         type: "string"
-
+  majors:
+    type: "object"
+    properties:
+      major_Id:
+        type: "string"
+      majorName:
+        type: "string"
+      category:
+        type: "string"
+        
+  applications:
+    type: "object"
+    properties:
+      applicationStatus:
+        type: "string"
+      applicationDate:
+        type: "string"
+      approvedBy:
+        type: "string"
+      comments:
+        type: "string"
+        
   internships:
     type: "object"
     properties:
@@ -565,56 +338,36 @@ definitions:
         type: "string"
       employerContact:
         type: "string"
-		addressLine1:
-        type: "string"
-		addressLine2:
-        type: "string"
-		city:
-        type: "string"
-		state:
-        type: "string"
-		zipCode:
-        type: "string"
-		
-	applications:
-   	type: "object"
-    properties:
-      applicationStatus:
-        type: "string"
-      applicationDate:
-        type: "string"
-      approvedBy:
-        type: "string"
-      comments:
-        type: "string"
-		
-   majors:
-   	type: "object"
-    properties:
-      major_Id:
-        type: "string"
-      majorName:
-        type: "string"
-      category:
-        type: "string"
-      
-    	
-   student_details:
-   	type: "object"
-    properties:
       addressLine1:
         type: "string"
       addressLine2:
         type: "string"
       city:
-        type: "string"	
-state:
         type: "string"
-zipCode:
+      state:
         type: "string"
-contact:
+      zipCode:
+        type: "string"      
+        
+  User:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      username:
         type: "string"
-		
+      firstName:
+        type: "string"
+      lastName:
+        type: "string"
+      email:
+        type: "string"
+      password:
+        type: "string"
+    xml:
+      name: "User"
+
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"
